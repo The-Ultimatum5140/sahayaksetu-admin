@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb;   /* tumhara primary color */
+  --color-secondary: #0f172a;
+}

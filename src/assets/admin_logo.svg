@@ -1,0 +1,28 @@
+<svg width="500" height="150" viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="blueTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Medical Cross -->
+  <rect x="30" y="35" width="50" height="80" rx="12" fill="url(#blueTeal)"/>
+  <rect x="5" y="60" width="100" height="30" rx="12" fill="url(#blueTeal)"/>
+
+  <!-- Stethoscope -->
+  <circle cx="85" cy="95" r="10" stroke="#0f172a" stroke-width="4" fill="white"/>
+  <path d="M85 85 Q 110 40 140 75" stroke="#0f172a" stroke-width="4" fill="none"/>
+  <circle cx="140" cy="75" r="6" fill="#0f172a"/>
+
+  <!-- Text -->
+  <text x="170" y="90"
+        font-family="Poppins, Arial, sans-serif"
+        font-size="42"
+        font-weight="600"
+        fill="url(#blueTeal)">
+    SahayakSetu
+  </text>
+</svg>
