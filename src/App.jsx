@@ -26,6 +26,7 @@ const App = () => {
   const isAdmin = !!aToken;
   const isDoctor = !!dToken;
 
+  // prevent both login
   if (isAdmin && isDoctor) {
     localStorage.removeItem("dToken");
     window.location.reload();
@@ -41,62 +42,115 @@ const App = () => {
         <Route
           path="/"
           element={
-            isAdmin
-              ? <Navigate to="/dashboard" />
-              : isDoctor
-              ? <Navigate to="/doctor-dashboard" />
-              : <Login />
+            isAdmin ? (
+              <Navigate to="/dashboard" />
+            ) : isDoctor ? (
+              <Navigate to="/doctor-dashboard" />
+            ) : (
+              <Login />
+            )
           }
         />
 
-        {/* ADMIN */}
+        {/* ================= ADMIN ================= */}
         {isAdmin && (
-          <Route path="/*" element={
-            <div>
-              <Navbar />
-              <div className="flex">
-                <Sidebar role="admin" />
-                <div className="ml-64 w-full pt-20 p-6">
-                  <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/all-appointments" element={<AllAppointments />} />
-                    <Route path="/add-doctor" element={<AddDoctor />} />
-                    <Route path="/doctor-list" element={<DoctorsList />} />
-                  </Routes>
-                </div>
-              </div>
-            </div>
-          } />
+          <>
+            <Route
+              path="/dashboard"
+              element={
+                <Layout role="admin">
+                  <Dashboard />
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/all-appointments"
+              element={
+                <Layout role="admin">
+                  <AllAppointments />
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/add-doctor"
+              element={
+                <Layout role="admin">
+                  <AddDoctor />
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/doctor-list"
+              element={
+                <Layout role="admin">
+                  <DoctorsList />
+                </Layout>
+              }
+            />
+          </>
         )}
 
-        {/* DOCTOR */}
+        {/* ================= DOCTOR ================= */}
         {isDoctor && (
-          <Route path="/*" element={
-            <div>
-              <Navbar />
-              <div className="flex">
-                <Sidebar role="doctor" />
-                <div className="ml-64 w-full pt-20 p-6">
-                  <Routes>
-                    <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-                    <Route path="/doctor-appointments" element={<DoctorAppointment />} />
-                    <Route path="/doctor-profile" element={<DoctorProfile />} />
+          <>
+            <Route
+              path="/doctor-dashboard"
+              element={
+                <Layout role="doctor">
+                  <DoctorDashboard />
+                </Layout>
+              }
+            />
 
-                    {/* 🔥 IMPORTANT */}
-                    <Route
-                      path="/doctor/prescription/:appointmentId"
-                      element={<AddPrescription />}
-                    />
-                  </Routes>
-                </div>
-              </div>
-            </div>
-          } />
+            <Route
+              path="/doctor-appointments"
+              element={
+                <Layout role="doctor">
+                  <DoctorAppointment />
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/doctor-profile"
+              element={
+                <Layout role="doctor">
+                  <DoctorProfile />
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/doctor/prescription/:appointmentId"
+              element={
+                <Layout role="doctor">
+                  <AddPrescription />
+                </Layout>
+              }
+            />
+          </>
         )}
 
+        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
+  );
+};
+
+// 🔥 REUSABLE LAYOUT (BEST PRACTICE)
+const Layout = ({ children, role }) => {
+  return (
+    <div>
+      <Navbar />
+      <div className="flex">
+        <Sidebar role={role} />
+        <div className="ml-64 w-full pt-20 p-6">{children}</div>
+      </div>
+    </div>
   );
 };
 
