@@ -6,41 +6,19 @@ const API = axios.create({
 });
 
 //  REQUEST INTERCEPTOR (ROLE-BASED TOKEN)
-API.interceptors.request.use(
-  (config) => {
-    console.log("interceptors running")
-    if (!config.headers) config.headers = {};
+API.interceptors.request.use((config) => {
+  console.log("🔥 interceptor running");
 
-    const url = config.url || "";
+  if (!config.headers) config.headers = {};
 
-    // ADMIN ROUTES
-    if (url.includes("/api/admin")) {
-      const aToken = localStorage.getItem("aToken");
-      if (aToken) {
-        config.headers.Authorization = `Bearer ${aToken}`;
-      }
-    }
+  const aToken = localStorage.getItem("aToken");
 
-    // ✅ DOCTOR ROUTES
-    else if (url.includes("/api/doctor")) {
-      const dToken = localStorage.getItem("dToken");
-      if (dToken) {
-        config.headers.Authorization = `Bearer ${dToken}`;
-      }
-    }
+  if (aToken) {
+    config.headers.Authorization = `Bearer ${aToken}`;
+  }
 
-    // ✅ USER ROUTES (optional future)
-    else if (url.includes("/api/user")) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
+  return config;
+});
 
 // 🔥 RESPONSE INTERCEPTOR (AUTO LOGOUT)
 API.interceptors.response.use(
