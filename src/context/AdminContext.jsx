@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import axios from "axios";
+import API from "../pages/services/api";
 import { toast } from "react-toastify";
 
 export const AdminContext = createContext();
@@ -11,20 +11,17 @@ const AdminContextProvider = ({ children }) => {
   const [appointments, setAppointments] = useState([]);
   const [dashData, setDashData] = useState(false);
 
-  // reusable axios config
-  const authConfig = {
-    headers: {
-      Authorization: `Bearer ${aToken}`,
-    },
-  };
+  // // reusable axios config
+  // const authConfig = {
+  //   headers: {
+  //     Authorization: `Bearer ${aToken}`,
+  //   },
+  // };
 
   // ================= GET ALL DOCTORS =================
   const getAllDoctors = async () => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/admin/all-doctors",
-        authConfig,
-      );
+      const { data } = await API.get("/api/admin/all-doctors");
 
       if (data.success) {
         setDoctors(data.doctors);
@@ -39,11 +36,9 @@ const AdminContextProvider = ({ children }) => {
   // ================= CHANGE AVAILABILITY =================
   const changeAvailability = async (docId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/change-availability",
-        { docId },
-        authConfig,
-      );
+      const { data } = await API.post("/api/admin/change-availability", {
+        docId,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -59,11 +54,7 @@ const AdminContextProvider = ({ children }) => {
   // ================= GET ALL APPOINTMENTS =================
   const getAllAppointments = async () => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/appointments",
-        {},
-        authConfig,
-      );
+      const { data } = await API.post("/api/admin/appointments", {});
 
       if (data.success) {
         setAppointments(data.appointments);
@@ -78,11 +69,9 @@ const AdminContextProvider = ({ children }) => {
   // ================= CANCEL APPOINTMENT =================
   const cancelAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/cancel-appointment",
-        { appointmentId },
-        authConfig,
-      );
+      const { data } = await API.post(`/api/admin/cancel-appointment`, {
+        appointmentId,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -98,10 +87,7 @@ const AdminContextProvider = ({ children }) => {
   // ==============dashboard data================
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/admin/dashboard",
-        authConfig,
-      );
+      const { data } = await API.get("/api/admin/dashboard");
 
       if (data.success) {
         setDashData(data.dashData);

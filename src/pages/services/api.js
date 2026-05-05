@@ -5,7 +5,7 @@ const API = axios.create({
   withCredentials: true, // optional (future-safe)
 });
 
-// 🔥 REQUEST INTERCEPTOR (ROLE-BASED TOKEN)
+//  REQUEST INTERCEPTOR (ROLE-BASED TOKEN)
 API.interceptors.request.use(
   (config) => {
     if (!config.headers) config.headers = {};
