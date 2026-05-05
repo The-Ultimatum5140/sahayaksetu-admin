@@ -8,6 +8,7 @@ const API = axios.create({
 //  REQUEST INTERCEPTOR (ROLE-BASED TOKEN)
 API.interceptors.request.use(
   (config) => {
+    console.log("interceptors running")
     if (!config.headers) config.headers = {};
 
     const url = config.url || "";
