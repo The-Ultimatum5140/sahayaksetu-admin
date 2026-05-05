@@ -1,12 +1,10 @@
 import React, { createContext, useState, useCallback } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import API from "../services/api"; // 🔥 IMPORTANT
 
 export const DoctorContext = createContext();
 
 const DoctorContextProvider = ({ children }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
   const [dToken, setDToken] = useState(localStorage.getItem("dToken") || "");
   const [appointments, setAppointments] = useState([]);
   const [dashData, setDashData] = useState(false);
@@ -15,14 +13,7 @@ const DoctorContextProvider = ({ children }) => {
   // ---------------- GET APPOINTMENTS ----------------
   const getAppointments = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/doctor/appointments",
-        {  
-          headers: {
-                      Authorization: `Bearer ${dToken}`,
-          },  
-        }
-      );
+      const { data } = await API.get("/api/doctor/appointments");
 
       if (data.success) {
         setAppointments(data.appointments);
@@ -30,19 +21,16 @@ const DoctorContextProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (err) {
-      console.log(err);
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message);
     }
-  }, [backendUrl, dToken]);
+  }, []);
 
   // ---------------- COMPLETE ----------------
   const completeAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/doctor/complete-appointment",
-        { appointmentId },
-        { headers: { Authorization: `Bearer ${dToken}` } },
-      );
+      const { data } = await API.post("/api/doctor/complete-appointment", {
+        appointmentId,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -58,11 +46,9 @@ const DoctorContextProvider = ({ children }) => {
   // ---------------- CANCEL ----------------
   const cancelAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        backendUrl + "/api/doctor/cancel-appointment",
-        { appointmentId },
-        { headers: { Authorization: `Bearer ${dToken}` } },
-      );
+      const { data } = await API.post("/api/doctor/cancel-appointment", {
+        appointmentId,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -78,9 +64,7 @@ const DoctorContextProvider = ({ children }) => {
   // ---------------- DASHBOARD ----------------
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/doctor/dashboard", {
-        headers: { Authorization: `Bearer ${dToken}` },
-      });
+      const { data } = await API.get("/api/doctor/dashboard");
 
       if (data.success) {
         setDashData(data.dashData);
@@ -88,17 +72,14 @@ const DoctorContextProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (err) {
-      console.log(err);
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message);
     }
   };
 
   // ---------------- PROFILE GET ----------------
   const getProfileData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/doctor/profile", {
-        headers: { Authorization: `Bearer ${dToken}` },
-      });
+      const { data } = await API.get("/api/doctor/profile");
 
       if (data.success) {
         setProfileData(data.profileData);
@@ -106,35 +87,27 @@ const DoctorContextProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (err) {
-      console.log(err);
-      toast.error(err.message);
-    }
-  };
-
-  // ---------------- PROFILE UPDATE (NEW) ----------------
-  const updateProfile = async (profile) => {
-    try {
-      const { data } = await axios.post(
-        backendUrl + "/api/doctor/update-profile",
-        profile,
-        { headers: { Authorization: `Bearer ${dToken}` } },
-      );
-
-      if (data.success) {
-        toast.success("Profile updated successfully");
-        getProfileData(); // reload fresh profile
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      console.log(err);
       toast.error(err.response?.data?.message || err.message);
     }
   };
 
-  // ---------------- CONTEXT VALUE ----------------
+  // ---------------- PROFILE UPDATE ----------------
+  const updateProfile = async (profile) => {
+    try {
+      const { data } = await API.post("/api/doctor/update-profile", profile);
+
+      if (data.success) {
+        toast.success("Profile updated successfully");
+        getProfileData();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+    }
+  };
+
   const value = {
-    backendUrl,
     dToken,
     setDToken,
     appointments,
@@ -147,7 +120,7 @@ const DoctorContextProvider = ({ children }) => {
     profileData,
     setProfileData,
     getProfileData,
-    updateProfile, // added here
+    updateProfile,
   };
 
   return (
