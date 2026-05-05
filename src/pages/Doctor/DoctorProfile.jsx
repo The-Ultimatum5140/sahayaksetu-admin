@@ -34,15 +34,11 @@ const DoctorProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 p-6">
-
       <div className="max-w-5xl mx-auto">
-
         {/* CARD */}
         <div className="backdrop-blur-lg bg-white/80 shadow-xl rounded-3xl border border-white/40 p-8 transition hover:shadow-2xl">
-
           {/* TOP SECTION */}
           <div className="flex flex-col md:flex-row gap-8 items-center">
-
             {/* IMAGE */}
             <div className="relative group">
               <img
@@ -80,7 +76,6 @@ const DoctorProfile = () => {
 
           {/* FEES + ADDRESS */}
           <div className="grid md:grid-cols-2 gap-8 mt-8">
-
             {/* FEES */}
             <div className="bg-white/70 backdrop-blur-md rounded-xl p-5 border shadow-sm hover:shadow-md transition">
               <p className="text-sm font-semibold text-gray-600 mb-2">
@@ -91,9 +86,7 @@ const DoctorProfile = () => {
                 <input
                   type="number"
                   value={form.fees}
-                  onChange={(e) =>
-                    setForm({ ...form, fees: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, fees: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-300 outline-none"
                 />
               ) : (
@@ -151,11 +144,9 @@ const DoctorProfile = () => {
 
           {/* AVAILABILITY SWITCH */}
           <div className="mt-8 flex items-center gap-4">
-
             <div
               onClick={() =>
-                edit &&
-                setForm({ ...form, available: !form.available })
+                edit && setForm({ ...form, available: !form.available })
               }
               className={`w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition
               ${form.available ? "bg-green-400" : "bg-gray-300"}
@@ -167,14 +158,11 @@ const DoctorProfile = () => {
               />
             </div>
 
-            <span className="text-gray-700 text-sm">
-              Available for booking
-            </span>
+            <span className="text-gray-700 text-sm">Available for booking</span>
           </div>
 
           {/* BUTTONS */}
           <div className="mt-10 flex gap-4">
-
             {edit ? (
               <>
                 <button
@@ -203,7 +191,6 @@ const DoctorProfile = () => {
               </button>
             )}
           </div>
-
         </div>
       </div>
     </div>

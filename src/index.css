@@ -4,3 +4,18 @@
   --color-primary: #2563eb;   /* tumhara primary color */
   --color-secondary: #0f172a;
 }
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  transition: 0.2s;
+  background: #fff;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}

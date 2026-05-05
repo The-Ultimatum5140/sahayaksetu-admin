@@ -13,15 +13,16 @@ const AdminContextProvider = ({ children }) => {
 
   // reusable axios config
   const authConfig = {
-    headers: { atoken: aToken },
+    headers: {
+      Authorization: `Bearer ${aToken}`,
+    },
   };
 
   // ================= GET ALL DOCTORS =================
   const getAllDoctors = async () => {
     try {
-      const { data } = await axios.post(
+      const { data } = await axios.get(
         backendUrl + "/api/admin/all-doctors",
-        {},
         authConfig,
       );
 
@@ -97,12 +98,13 @@ const AdminContextProvider = ({ children }) => {
   // ==============dashboard data================
   const getDashData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
-        headers: { aToken: aToken },
-      });
+      const { data } = await axios.get(
+        backendUrl + "/api/admin/dashboard",
+        authConfig,
+      );
+
       if (data.success) {
         setDashData(data.dashData);
-        console.log(data.dashData);
       } else {
         toast.error(data.message);
       }

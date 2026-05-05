@@ -17,11 +17,15 @@ const DoctorContextProvider = ({ children }) => {
     try {
       const { data } = await axios.get(
         backendUrl + "/api/doctor/appointments",
-        { headers: { dtoken: dToken } },
+        {  
+          headers: {
+                      Authorization: `Bearer ${dToken}`,
+          },  
+        }
       );
 
       if (data.success) {
-        setAppointments([...data.appointments].reverse());
+        setAppointments(data.appointments);
       } else {
         toast.error(data.message);
       }
@@ -37,7 +41,7 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.post(
         backendUrl + "/api/doctor/complete-appointment",
         { appointmentId },
-        { headers: { dtoken: dToken } },
+        { headers: { Authorization: `Bearer ${dToken}` } },
       );
 
       if (data.success) {
@@ -57,7 +61,7 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.post(
         backendUrl + "/api/doctor/cancel-appointment",
         { appointmentId },
-        { headers: { dtoken: dToken } },
+        { headers: { Authorization: `Bearer ${dToken}` } },
       );
 
       if (data.success) {
@@ -75,7 +79,7 @@ const DoctorContextProvider = ({ children }) => {
   const getDashData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/doctor/dashboard", {
-        headers: { dtoken: dToken },
+        headers: { Authorization: `Bearer ${dToken}` },
       });
 
       if (data.success) {
@@ -93,7 +97,7 @@ const DoctorContextProvider = ({ children }) => {
   const getProfileData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/doctor/profile", {
-        headers: { dtoken: dToken },
+        headers: { Authorization: `Bearer ${dToken}` },
       });
 
       if (data.success) {
@@ -113,7 +117,7 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.post(
         backendUrl + "/api/doctor/update-profile",
         profile,
-        { headers: { dtoken: dToken } },
+        { headers: { Authorization: `Bearer ${dToken}` } },
       );
 
       if (data.success) {
