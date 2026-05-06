@@ -1,6 +1,6 @@
 import React, { createContext, useState, useCallback } from "react";
 import { toast } from "react-toastify";
-import API from "../services/api"; // 🔥 IMPORTANT
+import API from "../pages/services/api";
 
 export const DoctorContext = createContext();
 
